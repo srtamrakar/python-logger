@@ -1,4 +1,4 @@
-# DailyPyLogger
+# DailyLogger
 A basic daily logger to log python projects.
 
 ## Requirements
@@ -7,19 +7,19 @@ A basic daily logger to log python projects.
 
 ## Install with pip
 ```bash
-$ pip install DailyPyLogger
+$ pip install DailyLogger
 ```
 
 ## Usage
 1. Import the library.
 ```python
-from DailyPyLogger import DailyPyLogger
+from DailyLogger import DailyLogger
 ```
 
 1. Create an instance by defining the path for logfiles, the project name, the level of logging
 and whether to log to *sys.stdout*.
 ```python
-py_logger = DailyPyLogger(log_subfolder='demo_logs', project_name='demo', log_level='info', should_also_log_to_stdout=True)
+py_logger = DailyLogger(log_subfolder='demo_logs', project_name='demo', log_level='info', should_also_log_to_stdout=True)
 ```
 
 1. Get valid logger and start logging.

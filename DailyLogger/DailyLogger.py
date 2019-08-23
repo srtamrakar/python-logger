@@ -8,7 +8,7 @@ import time
 import logging
 
 
-class DailyPyLogger(object):
+class DailyLogger(object):
 	"""
 	A basic daily logger to log python projects.
 

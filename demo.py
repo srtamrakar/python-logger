@@ -8,7 +8,7 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 import argparse
-from DailyPyLogger.DailyPyLogger import DailyPyLogger
+from DailyLogger.DailyLogger import DailyLogger
 
 arg_parser = argparse.ArgumentParser()
 
@@ -35,7 +35,7 @@ arg_parser.add_argument("-o", "--output",
 
 args = vars(arg_parser.parse_args())
 
-py_logger = DailyPyLogger(
+py_logger = DailyLogger(
 	log_folder= args['folder'],
 	project_name = args['project'],
 	log_level = args['level'],
@@ -66,7 +66,7 @@ def main():
 		logger.error(err)
 		pass
 
-	logger.info(DailyPyLogger.as_header_style('END: DEMO LOGGING'))
+	logger.info(DailyLogger.as_header_style('END: DEMO LOGGING'))
 
 	return
 
