@@ -45,6 +45,7 @@ def demo_function(arg_1=None, arg_2=None, *args, **kwargs):
 	pass
 
 
+@py_logger.log_function_call
 def main():
 	logger.info(py_logger.as_header_style('START: DEMO LOGGING'))
 

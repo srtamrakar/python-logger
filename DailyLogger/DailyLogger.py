@@ -115,6 +115,7 @@ class DailyLogger(object):
 					', '.join('{} = {!r}'.format(*item) for item in func_args.items())
 				)
 			)
+			return func(*args, **kwargs)
 
 		return wrapper
 
