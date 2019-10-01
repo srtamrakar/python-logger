@@ -7,7 +7,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), encoding='utf-8'
 setup(
 	name='DailyLogger',
 	packages=['DailyLogger'],
-	version='0.1.2',
+	version='0.1.3',
 	license='MIT',
 	description='A basic daily logger to log python projects.',
 	long_description=long_description,
@@ -15,7 +15,7 @@ setup(
 	author='Samyak Ratna Tamrakar',
 	author_email='samyak.r.tamrakar@gmail.com',
 	url='https://github.com/srtamrakar/python-logger',
-	download_url='https://github.com/srtamrakar/python-logger/archive/v_0.1.2.tar.gz',
+	download_url='https://github.com/srtamrakar/python-logger/archive/v_0.1.3.tar.gz',
 	keywords=['log', 'logger', 'logging'],
 	install_requires=[
 	],

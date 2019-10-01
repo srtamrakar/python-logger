@@ -97,7 +97,7 @@ class DailyLogger(object):
 		logging.basicConfig(
 			handlers=self.log_handlers,
 			level=self.log_level,
-			format='%(asctime)-23.23s - %(levelname)-5.5s - F %(filename)-20.20s - L %(lineno)-4.4d :: %(message)s'
+			format='%(asctime)-23.23s - %(levelname)-12.12s - F %(filename)-20.20s - L %(lineno)-4.4d :: %(message)s'
 		)
 		logger = logging.getLogger()
 		return logger
