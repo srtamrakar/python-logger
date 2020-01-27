@@ -18,12 +18,17 @@ $ pip install DailyLogger
 2. Create an instance by defining the path for logfiles, the project name, the level of logging
 and whether to log to *sys.stdout*.
     ```python
-    py_logger = DailyLogger(log_subfolder='demo_logs', project_name='demo', log_level='info', should_also_log_to_stdout=True)
+    py_logger = DailyLogger(
+       log_folder="demo_logs",
+       project_name="demo",
+       log_level="info",
+       should_also_log_to_stdout=True,
+    )
     ```
 3. Get valid logger and start logging.
     ```python
     logger = py_logger.get_logger()
-    logger.info('Testing 1 2 3 ...')
+    logger.info("Testing 1 2 3 ...")
     ```
 
 *"Testing 1 2 3 ..."* is logged to *sys.stdout*, as well as to *./demo_logs/demo_<YYYY-MM-DD>.log*.
