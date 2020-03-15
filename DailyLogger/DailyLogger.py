@@ -7,6 +7,7 @@ import inspect
 import time
 import logging
 from typing import NoReturn
+from multiprocessing_logging import install_mp_handler
 
 
 class DailyLogger(object):
@@ -96,6 +97,7 @@ class DailyLogger(object):
             format="%(asctime)-23.23s - %(levelname)-12.12s - F %(filename)-20.20s - L %(lineno)-4.4d :: %(message)s",
         )
         logger = logging.getLogger()
+        install_mp_handler(logger)
         return logger
 
     def log_function_call(self, func):
