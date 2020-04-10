@@ -12,7 +12,7 @@ Convenient wrapper for logging python applications into files with desired separ
 
 ## Install with pip
 ```bash
-$ pip install DailyLogger
+$ pip install NeatLogger
 ```
 
 ## Usage
@@ -20,7 +20,7 @@ $ pip install DailyLogger
     ```python
     from NeatLogger import NeatLogger
     ```
-2. Create an instance by defining the path for log file, the project name, the level of logging, log file separation interval, whether to log to *sys.stdout* and whether to use utc for logging.
+2. Create an instance by defining the path for log file, the project name, the level of logging, log file separation interval, whether to log to *sys.stdout* and whether to use UTC for logging.
     ```python
     NL = NeatLogger(
        project_name="demo",
@@ -53,4 +53,4 @@ python3 demo.py -p demo -f demo_logs -i daily -l debug -o -u
 
 ## Author
 
-* **&copy; Samyak Ratna Tamrakar** - [Github](https://github.com/srtamrakar), [LinkedIn](https://www.linkedin.com/in/srtamrakar/).
+* **&copy; [Samyak Ratna Tamrakar](https://www.linkedin.com/in/srtamrakar/)**.
