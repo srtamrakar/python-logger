@@ -4,11 +4,11 @@ from setuptools import setup
 with open(os.path.join(os.path.dirname(__file__), "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 
-module_version = "0.1.5"
+module_version = "0.1.6"
 
 setup(
-    name="DailyLogger",
-    packages=["DailyLogger"],
+    name="NeatLogger",
+    packages=["NeatLogger"],
     version=module_version,
     license="MIT",
     description="A basic daily logger to log python projects.",
@@ -19,10 +19,10 @@ setup(
     url="https://github.com/srtamrakar/python-logger",
     download_url=f"https://github.com/srtamrakar/python-logger/archive/v_{module_version}.tar.gz",
     keywords=["log", "logger", "logging"],
-    install_requires=["multiprocessing_logging==0.3.0"],
+    install_requires=["multiprocessing_logging==0.3.1"],
     classifiers=[
-        "Development Status :: 4 - Beta",  # Either"3 - Alpha", "4 - Beta" or "5 - Production/Stable"
-        "Intended Audience :: Developers",  # Define that your audience are developers
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Developers",
         "Topic :: Software Development :: Build Tools",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",

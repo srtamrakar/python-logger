@@ -1,9 +1,14 @@
-# DailyLogger
-A basic daily logger to log python projects.
+# NeatLogger
+Convenient wrapper for logging python applications into files with desired separation intervals.
+
+*Note*: Methods to initialize and terminate logging during `multiprocessing` is referenced from [multiprocessing-logging](https://github.com/jruere/multiprocessing-logging).
+
 
 ## Requirements
 
 * Python 3+ (Tested in 3.7)
+* multiprocessing-logging == 0.3.1
+
 
 ## Install with pip
 ```bash
@@ -13,25 +18,26 @@ $ pip install DailyLogger
 ## Usage
 1. Import the library.
     ```python
-    from DailyLogger import DailyLogger
+    from NeatLogger import NeatLogger
     ```
-2. Create an instance by defining the path for logfiles, the project name, the level of logging
-and whether to log to *sys.stdout*.
+2. Create an instance by defining the path for log file, the project name, the level of logging, log file separation interval, whether to log to *sys.stdout* and whether to use utc for logging.
     ```python
-    py_logger = DailyLogger(
-       log_folder="demo_logs",
+    NL = NeatLogger(
        project_name="demo",
+       log_folder="demo_logs",
        log_level="info",
-       should_also_log_to_stdout=True,
+       log_to_stdout=True,
+       use_utc = True,
+       log_file_separation_interval="daily",
     )
     ```
 3. Get valid logger and start logging.
     ```python
-    logger = py_logger.get_logger()
+    logger = NL.get_logger()
     logger.info("Testing 1 2 3 ...")
     ```
 
-*"Testing 1 2 3 ..."* is logged to *sys.stdout*, as well as to *./demo_logs/demo_<YYYY-MM-DD>.log*.
+*"Testing 1 2 3 ..."* is logged to *sys.stdout*, as well as to *./demo_logs/demo_<`datetime`>.log*.
 
 Sample usage is also available as **demo.py**. Please refer to it's help for more info.
 
@@ -42,7 +48,7 @@ python3 demo.py -h
 
 To recreate Steps 1-3:
 ```bash
-python3 demo.py -p demo -f demo_logs -l info -o
+python3 demo.py -p demo -f demo_logs -i daily -l debug -o -u
 ```
 
 ## Author

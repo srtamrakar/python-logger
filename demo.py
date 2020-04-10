@@ -1,70 +1,45 @@
-import os.path
-import sys
+from multiprocessing import Pool
+from NeatLogger import NeatLogger
+import demo_args
 
-sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+ARGS = demo_args.get()
 
-import argparse
-from DailyLogger import DailyLogger
-
-arg_parser = argparse.ArgumentParser()
-
-arg_parser.add_argument(
-    "-f",
-    "--folder",
-    required=False,
-    help="Name of the subfolder where log files would be stored",
-    type=str,
+NL = NeatLogger(
+    project_name=ARGS["project"],
+    log_folder=ARGS["folder"],
+    log_level=ARGS["level"],
+    log_to_stdout=ARGS["output"],
+    use_utc=ARGS["use_utc"],
+    log_file_separation_interval=ARGS["separation_interval"],
 )
-
-arg_parser.add_argument(
-    "-p",
-    "--project",
-    required=False,
-    help="Project name, which would be used as logfile prefix",
-    type=str,
-)
-
-arg_parser.add_argument(
-    "-l",
-    "--level",
-    required=False,
-    help="Level for logging",
-    choices=["critical", "error", "warning", "info", "debug", "notset"],
-    type=str,
-)
-
-arg_parser.add_argument(
-    "-o",
-    "--output",
-    required=False,
-    help="Flag to decide whether or not display to stdout",
-    action="store_true",
-)
-
-args = vars(arg_parser.parse_args())
-
-py_logger = DailyLogger(
-    log_folder=args["folder"],
-    project_name=args["project"],
-    log_level=args["level"],
-    should_also_log_to_stdout=args["output"],
-)
-logger = py_logger.get_logger()
+logger = NL.get_logger()
 
 
-@py_logger.log_function_call
+def log_number(number: int):
+    logger.info(f"Logging: {number}")
+
+
+@NL.log_function_call
 def demo_function(arg_1=None, arg_2=None, *args, **kwargs):
     pass
 
 
-@py_logger.log_function_call
+@NL.log_function_call
 def main():
-    logger.info(py_logger.as_header_style("START: DEMO LOGGING"))
+    logger.info(NL.as_header_style("START: DEMO LOGGING"))
 
     demo_function(1, 2, 3, kwarg_1="Demo value 1", kwarg_2="Demo value 2")
 
     logger.info("Testing 1 2 3 ...")
     logger.info("Umlauts: ä ö ü ß")
+
+    # with Pool(processes=5) as pool:
+    #     NL.start_mp(logger)
+    #     pool.map(log_number, range(10))
+    #     NL.end_mp(logger)
+
+    logger.warning("Warning!")
+    logger.debug("Debugging ...")
 
     try:
         raise Exception("An error was forced.")
@@ -72,7 +47,7 @@ def main():
         logger.error(err)
         pass
 
-    logger.info(DailyLogger.as_header_style("END: DEMO LOGGING"))
+    logger.info(NeatLogger.as_header_style("END: DEMO LOGGING"))
 
     return
 
