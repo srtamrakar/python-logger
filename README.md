@@ -53,4 +53,4 @@ python3 demo.py -p demo -f demo_logs -i daily -l debug -o -u
 
 ## Author
 
-* **&copy; [Samyak Ratna Tamrakar](https://www.linkedin.com/in/srtamrakar/)**.
+**&copy; 2020, [Samyak Ratna Tamrakar](https://www.linkedin.com/in/srtamrakar/)**.
