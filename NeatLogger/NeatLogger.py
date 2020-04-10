@@ -81,7 +81,7 @@ class NeatLogger(object):
             self.log_format.converter = time.gmtime
 
     def __set_logger(self) -> NoReturn:
-        self.logger = logging.getLogger(self.project)
+        self.logger = logging.getLogger()
         self.logger.setLevel(self.log_level)
 
     def __add_handler(self, handler: logging.Handler) -> NoReturn:

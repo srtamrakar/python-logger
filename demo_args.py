@@ -2,6 +2,8 @@ import argparse
 import logging
 from typing import NoReturn
 
+logger = logging.getLogger(__name__)
+
 arg_parser = argparse.ArgumentParser()
 
 arg_parser.add_argument(
@@ -55,8 +57,6 @@ arg_parser.add_argument(
 )
 
 args = vars(arg_parser.parse_args())
-
-logger = logging.getLogger(args["project"])
 
 
 def log_args() -> NoReturn:
