@@ -14,6 +14,8 @@ NL = NeatLogger(
 )
 logger = NL.get_logger()
 
+demo_args.log_args()
+
 
 def log_number(number: int):
     logger.info(f"Logging: {number}")

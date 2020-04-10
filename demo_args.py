@@ -1,4 +1,6 @@
 import argparse
+import logging
+from typing import NoReturn
 
 arg_parser = argparse.ArgumentParser()
 
@@ -52,8 +54,14 @@ arg_parser.add_argument(
     action="store_true",
 )
 
+args = vars(arg_parser.parse_args())
+
+logger = logging.getLogger(args["project"])
+
+
+def log_args() -> NoReturn:
+    logger.info(f"args = {args}")
+
 
 def get() -> dict:
-    args = vars(arg_parser.parse_args())
-
     return args
