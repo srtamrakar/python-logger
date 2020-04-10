@@ -4,14 +4,14 @@ from setuptools import setup
 with open(os.path.join(os.path.dirname(__file__), "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 
-module_version = "0.1.6"
+module_version = "0.2"
 
 setup(
     name="NeatLogger",
     packages=["NeatLogger"],
     version=module_version,
     license="MIT",
-    description="A basic daily logger to log python projects.",
+    description="Convenient wrapper for logging python applications into files with desired separation intervals.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="Samyak Ratna Tamrakar",
