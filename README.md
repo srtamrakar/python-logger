@@ -20,7 +20,7 @@ $ pip install NeatLogger
     ```python
     from NeatLogger import NeatLogger
     ```
-2. Create an instance by defining the path for log file, the project name, the level of logging, log file separation interval, whether to log to *sys.stdout* and whether to use UTC for logging.
+2. Create an instance by defining the folder to store log files, the project name, the level of logging, the log file separation interval, whether to log to *sys.stdout* and whether to use UTC for logging.
     ```python
     NL = NeatLogger(
        project_name="demo",
@@ -31,7 +31,7 @@ $ pip install NeatLogger
        log_file_separation_interval="daily",
     )
     ```
-3. Get valid logger and start logging.
+3. Get a logger and start logging.
     ```python
     logger = NL.get_logger()
     logger.info("Testing 1 2 3 ...")
