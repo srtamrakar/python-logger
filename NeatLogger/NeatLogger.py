@@ -62,7 +62,6 @@ class NeatLogger(object):
         )
 
     def __set_log_filename(self) -> NoReturn:
-        self.__get_log_filename_suffix()
         self.log_filename = "{0}_{1}.{2}".format(
             self.project, self.__get_log_filename_suffix(), "log"
         )
