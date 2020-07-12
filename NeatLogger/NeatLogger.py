@@ -4,7 +4,10 @@ import logging
 import time
 from datetime import datetime
 from typing import NoReturn
+import pyfiglet
 from multiprocessing_logging import install_mp_handler, uninstall_mp_handler
+
+
 from NeatLogger.exceptions import InvalidValue
 
 
@@ -16,37 +19,61 @@ class NeatLogger(object):
         log_level: str = "info",
         log_file_separation_interval: str = "secondly",
         log_to_stdout: bool = True,
+        log_to_file: bool = True,
         use_utc: bool = False,
     ) -> NoReturn:
 
         self.project = project_name.lower()
         self.log_folder = os.path.abspath(log_folder)
         self.log_level = log_level.upper()
+        self.log_file_separation_interval = log_file_separation_interval
         self.log_to_stdout = log_to_stdout
+        self.log_to_file = log_to_file
         self.use_utc = use_utc
-        self.__set_log_file_separation_interval(log_file_separation_interval)
-        self.__set_log_filename()
-        self.__set_log_filepath()
         self.__set_formatter()
         self.__set_logger()
         self.__set_log_handlers()
+        self.__log_project_name()
 
-    def __set_log_file_separation_interval(
-        self, log_file_separation_interval: str
-    ) -> NoReturn:
-        log_file_separation_interval = log_file_separation_interval.lower()
+    def __set_formatter(self) -> NoReturn:
+        self.log_format = logging.Formatter(
+            fmt="%(asctime)-23.23s - %(levelname)-12.12s - "
+            + "F %(filename)-20.20s - L %(lineno)-4.4d :: %(message)s",
+        )
+        if self.use_utc is True:
+            self.log_format.converter = time.gmtime
+
+    def __set_logger(self) -> NoReturn:
+        self.logger = logging.getLogger()
+        self.logger.setLevel(self.log_level)
+
+    def get_logger(self) -> logging.Logger:
+        return self.logger
+
+    def __set_log_handlers(self) -> NoReturn:
+        if self.log_to_file is True:
+            self.__set_log_file_separation_interval()
+            self.__set_log_filename()
+            self.__set_log_filepath()
+            fh = logging.FileHandler(self.log_filepath, encoding="utf-8")
+            self.__add_handler(fh)
+
+        if self.log_to_stdout is True:
+            sh = logging.StreamHandler()
+            self.__add_handler(sh)
+
+    def __set_log_file_separation_interval(self) -> NoReturn:
         allowed_value_list = ["daily", "hourly", "secondly"]
 
-        if log_file_separation_interval not in allowed_value_list:
-            raise InvalidValue(log_file_separation_interval, allowed_value_list)
+        if self.log_file_separation_interval not in allowed_value_list:
+            raise InvalidValue(self.log_file_separation_interval, allowed_value_list)
 
-        self.log_file_separation_interval = log_file_separation_interval
+        self.log_file_separation_interval = self.log_file_separation_interval.lower()
 
-    def __get_datetime_now(self) -> datetime:
-        if self.use_utc is True:
-            return datetime.utcnow()
-        else:
-            return datetime.now()
+    def __set_log_filename(self) -> NoReturn:
+        self.log_filename = "{0}_{1}.{2}".format(
+            self.project, self.__get_log_filename_suffix(), "log"
+        )
 
     def __get_log_filename_suffix(self) -> str:
         datetime_now = self.__get_datetime_now()
@@ -61,40 +88,25 @@ class NeatLogger(object):
             separation_interval_to_format_dict[self.log_file_separation_interval]
         )
 
-    def __set_log_filename(self) -> NoReturn:
-        self.log_filename = "{0}_{1}.{2}".format(
-            self.project, self.__get_log_filename_suffix(), "log"
-        )
+    def __get_datetime_now(self) -> datetime:
+        if self.use_utc is True:
+            return datetime.utcnow()
+        else:
+            return datetime.now()
 
     def __set_log_filepath(self) -> NoReturn:
         if not os.path.exists(self.log_folder):
             os.makedirs(self.log_folder)
         self.log_filepath = os.path.join(self.log_folder, self.log_filename)
 
-    def __set_formatter(self) -> NoReturn:
-        self.log_format = logging.Formatter(
-            fmt="%(asctime)-23.23s - %(levelname)-12.12s - "
-            + "F %(filename)-20.20s - L %(lineno)-4.4d :: %(message)s",
-        )
-        if self.use_utc is True:
-            self.log_format.converter = time.gmtime
-
-    def __set_logger(self) -> NoReturn:
-        self.logger = logging.getLogger()
-        self.logger.setLevel(self.log_level)
-
     def __add_handler(self, handler: logging.Handler) -> NoReturn:
         handler.setLevel(self.log_level)
         handler.setFormatter(self.log_format)
         self.logger.addHandler(handler)
 
-    def __set_log_handlers(self) -> NoReturn:
-        fh = logging.FileHandler(self.log_filepath, encoding="utf-8")
-        self.__add_handler(fh)
-
-        if self.log_to_stdout is True:
-            sh = logging.StreamHandler()
-            self.__add_handler(sh)
+    def __log_project_name(self) -> NoReturn:
+        ascii_text = pyfiglet.figlet_format(self.project, font="standard")
+        self.logger.info(f"\n{ascii_text}")
 
     def log_function_call(self, func):
         def wrapper(*args, **kwargs):
@@ -121,6 +133,3 @@ class NeatLogger(object):
     @classmethod
     def end_mp(cls, logger: logging.Logger) -> NoReturn:
         uninstall_mp_handler(logger)
-
-    def get_logger(self) -> logging.Logger:
-        return self.logger

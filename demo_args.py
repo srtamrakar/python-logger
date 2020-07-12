@@ -49,10 +49,18 @@ arg_parser.add_argument(
 )
 
 arg_parser.add_argument(
-    "-o",
-    "--output",
+    "-so",
+    "--stdout",
     required=False,
-    help="Flag to decide whether or not display to stdout.",
+    help="Flag to decide whether or not to display logs in stdout.",
+    action="store_true",
+)
+
+arg_parser.add_argument(
+    "-fo",
+    "--fileout",
+    required=False,
+    help="Flag to decide whether or not to store logs in file.",
     action="store_true",
 )
 

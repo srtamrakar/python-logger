@@ -8,7 +8,8 @@ NL = NeatLogger(
     project_name=ARGS["project"],
     log_folder=ARGS["folder"],
     log_level=ARGS["level"],
-    log_to_stdout=ARGS["output"],
+    log_to_stdout=ARGS["stdout"],
+    log_to_file=ARGS["fileout"],
     use_utc=ARGS["use_utc"],
     log_file_separation_interval=ARGS["separation_interval"],
 )

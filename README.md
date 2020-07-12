@@ -27,6 +27,7 @@ $ pip install NeatLogger
        log_folder="demo_logs",
        log_level="info",
        log_to_stdout=True,
+       log_to_file=True,
        use_utc = True,
        log_file_separation_interval="daily",
     )
@@ -48,7 +49,7 @@ python3 demo.py -h
 
 To recreate Steps 1-3:
 ```bash
-python3 demo.py -p demo -f demo_logs -i daily -l debug -o -u
+python3 demo.py -p demo -f demo_logs -i daily -l debug -so -fo -u
 ```
 
 ## Author
