@@ -1,1 +1,1 @@
-from .NeatLogger import NeatLogger
+from .Log import Log

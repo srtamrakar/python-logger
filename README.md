@@ -18,38 +18,63 @@ $ pip install NeatLogger
 ## Usage
 1. Import the library.
     ```python
-    from NeatLogger import NeatLogger
+    from NeatLogger import Log
     ```
-2. Create an instance by defining the folder to store log files, the project name, the level of logging, the log file separation interval, whether to log to *sys.stdout* and whether to use UTC for logging.
+
+2. Create an instance.
     ```python
-    NL = NeatLogger(
-       project_name="demo",
-       log_folder="demo_logs",
-       log_level="info",
-       log_to_stdout=True,
-       use_utc = True,
-       log_file_separation_interval="daily",
-    )
+    log = Log()
     ```
+    Arguments (all are optional):
+    * `project_name`: Project name which would be used as log file's prefix.
+    * `log_folder`: Folder where log files would be stored.
+    * `log_level`: Level for logging. Choices:
+        * `"critical"`
+        * `"error"`
+        * `"warning"`
+        * `"info"`
+        * `"debug"`
+        * `"notset"`
+    * `log_file_suffix`: Log file suffix. Ignored when files are rotated by time. Choices:
+        * `"S"`: second
+        * `"H"`: hour
+        * `"M"`: minute
+        * `"D"`: day
+    * `log_to_stdout`: Flag to decide whether or not to display logs in stdout.
+    * `log_to_file`: Flag to decide whether or not to store logs in file.
+    * `rotate_file_by_size`: Flag to decide whether or not to rotate file by size.
+    * `rotating_file_max_size_bytes`: Size (in bytes) threshold to rollover the log file.
+    * `rotate_file_by_time`: Flag to decide whether or not to rotate file by time.
+    * `rotation_period`: Rotation period for the log file. Choices:
+        * `"S"`
+        * `"H"`
+        * `"M"`
+        * `"D"`
+        * `"MIDNIGHT"`
+        * `"W0"`
+        * `"W1"`
+        * `"W2"`
+        * `"W3"`
+        * `"W4"`
+        * `"W5"`
+        * `"W6"`
+    * `rotation_interval`: Intervals of rotation period to rollover the log file.
+    * `rotation_time`: Time of the day to rollover the log file.
+    * `rotating_file_backup_count`: Number of old files to be retained.
+    * `use_utc`: Flag to decide whether or not to use UTC.
+    * `log_formatter`: Logging formatter.
+    
+    :warning: If more than 1 of the following are set to `True`, only one of them is implemented. Their priority follows the order:
+    * `rotate_file_by_size`
+    * `rotate_file_by_time`
+    * `log_to_file`
+
 3. Get a logger and start logging.
     ```python
-    logger = NL.get_logger()
+    logger = log.get_logger()
     logger.info("Testing 1 2 3 ...")
     ```
 
-*"Testing 1 2 3 ..."* is logged to *sys.stdout*, as well as to *./demo_logs/demo_<`datetime`>.log*.
-
-Sample usage is also available as **demo.py**. Please refer to it's help for more info.
-
-For help:
-```bash
-python3 demo.py -h
-```
-
-To recreate Steps 1-3:
-```bash
-python3 demo.py -p demo -f demo_logs -i daily -l debug -o -u
-```
 
 ## Author
 

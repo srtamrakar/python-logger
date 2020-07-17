@@ -1,20 +1,25 @@
+import time
 from multiprocessing import Pool
-from NeatLogger import NeatLogger
-import demo_args
+from NeatLogger import Log
 
-ARGS = demo_args.get()
-
-NL = NeatLogger(
-    project_name=ARGS["project"],
-    log_folder=ARGS["folder"],
-    log_level=ARGS["level"],
-    log_to_stdout=ARGS["output"],
-    use_utc=ARGS["use_utc"],
-    log_file_separation_interval=ARGS["separation_interval"],
+NL = Log(
+    project_name="demo",
+    log_folder="demo_logs",
+    log_level="info",
+    log_file_suffix="S",
+    log_to_stdout=True,
+    log_to_file=False,
+    rotate_file_by_size=False,
+    rotating_file_max_size_bytes=200,
+    rotate_file_by_time=False,
+    rotation_period="S",
+    rotation_interval=1,
+    rotation_time=None,
+    rotating_file_backup_count=100,
+    use_utc=False,
+    log_formatter=None,
 )
 logger = NL.get_logger()
-
-demo_args.log_args()
 
 
 def log_number(number: int):
@@ -35,13 +40,17 @@ def main():
     logger.info("Testing 1 2 3 ...")
     logger.info("Umlauts: ä ö ü ß")
 
-    # with Pool(processes=5) as pool:
-    #     NL.start_mp(logger)
-    #     pool.map(log_number, range(10))
-    #     NL.end_mp(logger)
+    with Pool(processes=5) as pool:
+        NL.start_mp(logger)
+        pool.map(log_number, range(10))
+        NL.end_mp(logger)
 
     logger.warning("Warning!")
     logger.debug("Debugging ...")
+
+    for iteration_number in range(10):
+        time.sleep(0.5)
+        logger.info(f"iteration_number={iteration_number}")
 
     try:
         raise Exception("An error was forced.")
@@ -49,7 +58,7 @@ def main():
         logger.error(err)
         pass
 
-    logger.info(NeatLogger.as_header_style("END: DEMO LOGGING"))
+    logger.info(Log.as_header_style("END: DEMO LOGGING"))
 
     return
 
