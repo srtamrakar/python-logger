@@ -45,7 +45,7 @@ $ pip install NeatLogger
         * `"H"`: log file rollovers every hour. Ignores `rotation_time`.
         * `"D"`: log file rollovers every day. Ignores `rotation_time`.
         * `"MIDNIGHT"`: log file rollovers at midnight, or at `rotation_time` _if specified_.
-        * `"W0"`: log file rollovers on weekday 0 i.e. Monday at `rotation_time` _if specified_.
+        * `"W0"`: log file rollovers on weekday 0 i.e. Monday, at `rotation_time` _if specified_.
         * `"W1"`
         * `"W2"`
         * `"W3"`
@@ -53,7 +53,7 @@ $ pip install NeatLogger
         * `"W5"`
         * `"W6"`
     * `rotation_interval`: Intervals of rotation period to rollover the log file. Ignored if `rotation_time` is a weekday.
-    * `rotation_time`: Time of the day to rollover the log file when `rotation_period` = `"MIDNIGHT"` or a weekday. Default = `00:00`.
+    * `rotation_time`: Time of the day to rollover the log file when `rotation_period` = `"MIDNIGHT"` or a weekday.
     * `rotating_file_backup_count`: Number of old files to be retained.
     * `use_utc`: Flag to decide whether or not to use UTC.
     * `log_formatter`: Logging formatter.
