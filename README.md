@@ -23,9 +23,9 @@ $ pip install NeatLogger
 
 2. Create an instance.
     ```python
-    NL = NeatLogger()
+    log = Log()
     ```
-    Arguments:
+    Arguments (all are optional):
     * `project_name`: Project name, which would be used as log file's prefix.
     * `log_folder`: Folder where log files would be stored.
     * `log_level`: Level for logging. Choices:
@@ -71,7 +71,7 @@ $ pip install NeatLogger
 
 3. Get a logger and start logging.
     ```python
-    logger = NL.get_logger()
+    logger = log.get_logger()
     logger.info("Testing 1 2 3 ...")
     ```
 
