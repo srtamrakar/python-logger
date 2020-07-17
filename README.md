@@ -20,13 +20,14 @@ $ pip install NeatLogger
     ```python
     from NeatLogger import NeatLogger
     ```
+
 2. Create an instance.
     ```python
     NL = NeatLogger()
     ```
     Arguments:
     * `project_name`: Project name, which would be used as log file's prefix.
-    * `log_folder`: Name of the folder where log files would be stored.
+    * `log_folder`: Folder where log files would be stored.
     * `log_level`: Level for logging. Choices:
         * `"critical"`
         * `"error"`
@@ -63,31 +64,17 @@ $ pip install NeatLogger
     * `use_utc`: Flag to decide whether or not use UTC.
     * `log_formatter`: Logging formatter.
     
-    :warning: If more than 1 of following are set to `True`, only one of them is implemented. Their priority follows the order in which they are listed:
+    :warning: If more than 1 of the following are set to `True`, only one of them is implemented. Their priority follows the order:
     * `rotate_file_by_size`
     * `rotate_file_by_time`
     * `log_to_file`
-   
-   
+
 3. Get a logger and start logging.
     ```python
     logger = NL.get_logger()
     logger.info("Testing 1 2 3 ...")
     ```
 
-*"Testing 1 2 3 ..."* is logged to *sys.stdout*, as well as to *./demo_logs/demo_<`datetime`>.log*.
-
-Sample usage is also available as **demo.py**. Please refer to it's help for more info.
-
-For help:
-```bash
-python3 demo.py -h
-```
-
-To recreate Steps 1-3:
-```bash
-python3 demo.py -p demo -f demo_logs -i day -l debug -so -fo -u
-```
 
 ## Author
 
