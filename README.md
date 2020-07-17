@@ -30,9 +30,9 @@ $ pip install NeatLogger
         * `"debug"`
         * `"notset"`
     * `log_file_suffix`: Log file suffix. Ignored when files are rotated by time. Choices:
-        * `"S"`: `%Y-%m-%d__%H-%M-%S` is appended to the filename.
-        * `"M"`: `%Y-%m-%d__%H-%M-00` is appended to the filename.
-        * `"H"`: `%Y-%m-%d__%H-00-00` is appended to the filename.
+        * `"S"`: `%Y-%m-%d_%H-%M-%S` is appended to the filename.
+        * `"M"`: `%Y-%m-%d_%H-%M-00` is appended to the filename.
+        * `"H"`: `%Y-%m-%d_%H-00-00` is appended to the filename.
         * `"D"`: `%Y-%m-%d` is appended to the filename.
     * `log_to_stdout`: Flag to decide whether or not to display logs in stdout.
     * `log_to_file`: Flag to decide whether or not to store logs in file.
