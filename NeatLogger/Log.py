@@ -114,7 +114,7 @@ class Log(object):
         self.log_filepath = os.path.join(self.log_folder, self.log_filename)
 
     def __validate_rotation_period(self) -> NoReturn:
-        allowed_rotation_period_list = ["S", "H", "M", "D", "MIDNIGHT"]
+        allowed_rotation_period_list = ["S", "M", "H", "D", "MIDNIGHT"]
         allowed_rotation_period_list += list(map(lambda n: f"W{n}", range(0, 7)))
         if self.rotation_period not in allowed_rotation_period_list:
             raise InvalidValue(
@@ -131,10 +131,10 @@ class Log(object):
 
     def __get_log_filename_suffix(self) -> str:
         suffix_to_date_time_format_dict = {
+            "S": "%Y-%m-%d_%H-%M-%S",
+            "M": "%Y-%m-%d_%H-%M-00",
+            "H": "%Y-%m-%d_%H-00-00",
             "D": "%Y-%m-%d",
-            "H": "%Y-%m-%d__%H-00-00",
-            "M": "%Y-%m-%d__%H-%M-00",
-            "S": "%Y-%m-%d__%H-%M-%S",
         }
 
         if self.log_file_suffix not in suffix_to_date_time_format_dict.keys():

@@ -4,12 +4,6 @@ Convenient wrapper for logging python applications into files with desired separ
 *Note*: Methods to initialize and terminate logging during `multiprocessing` is referenced from [multiprocessing-logging](https://github.com/jruere/multiprocessing-logging).
 
 
-## Requirements
-
-* Python 3+ (Tested in 3.7)
-* multiprocessing-logging == 0.3.1
-
-
 ## Install with pip
 ```bash
 $ pip install NeatLogger
@@ -36,30 +30,30 @@ $ pip install NeatLogger
         * `"debug"`
         * `"notset"`
     * `log_file_suffix`: Log file suffix. Ignored when files are rotated by time. Choices:
-        * `"S"`: second
-        * `"H"`: hour
-        * `"M"`: minute
-        * `"D"`: day
+        * `"S"`: `%Y-%m-%d_%H-%M-%S` is appended to the filename.
+        * `"M"`: `%Y-%m-%d_%H-%M-00` is appended to the filename.
+        * `"H"`: `%Y-%m-%d_%H-00-00` is appended to the filename.
+        * `"D"`: `%Y-%m-%d` is appended to the filename.
     * `log_to_stdout`: Flag to decide whether or not to display logs in stdout.
     * `log_to_file`: Flag to decide whether or not to store logs in file.
     * `rotate_file_by_size`: Flag to decide whether or not to rotate file by size.
     * `rotating_file_max_size_bytes`: Size (in bytes) threshold to rollover the log file.
     * `rotate_file_by_time`: Flag to decide whether or not to rotate file by time.
     * `rotation_period`: Rotation period for the log file. Choices:
-        * `"S"`
-        * `"H"`
-        * `"M"`
-        * `"D"`
-        * `"MIDNIGHT"`
-        * `"W0"`
+        * `"S"`: log file rollovers every second. Ignores `rotation_time`.
+        * `"M"`: log file rollovers every minute. Ignores `rotation_time`.
+        * `"H"`: log file rollovers every hour. Ignores `rotation_time`.
+        * `"D"`: log file rollovers every day. Ignores `rotation_time`.
+        * `"MIDNIGHT"`: log file rollovers at midnight, or at `rotation_time` _if specified_.
+        * `"W0"`: log file rollovers on weekday 0 i.e. Monday, at `rotation_time` _if specified_.
         * `"W1"`
         * `"W2"`
         * `"W3"`
         * `"W4"`
         * `"W5"`
         * `"W6"`
-    * `rotation_interval`: Intervals of rotation period to rollover the log file.
-    * `rotation_time`: Time of the day to rollover the log file.
+    * `rotation_interval`: Intervals of rotation period to rollover the log file. Ignored if `rotation_time` is a weekday.
+    * `rotation_time`: Time of the day to rollover the log file when `rotation_period` = `"MIDNIGHT"` or a weekday.
     * `rotating_file_backup_count`: Number of old files to be retained.
     * `use_utc`: Flag to decide whether or not to use UTC.
     * `log_formatter`: Logging formatter.
