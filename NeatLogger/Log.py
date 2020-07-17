@@ -9,10 +9,10 @@ from logging.handlers import RotatingFileHandler, TimedRotatingFileHandler
 from multiprocessing_logging import install_mp_handler, uninstall_mp_handler
 
 
-from NeatLogger.exceptions import InvalidValue
+from .exceptions import InvalidValue
 
 
-class NeatLogger(object):
+class Log(object):
     def __init__(
         self,
         project_name: str = "log",

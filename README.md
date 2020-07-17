@@ -18,7 +18,7 @@ $ pip install NeatLogger
 ## Usage
 1. Import the library.
     ```python
-    from NeatLogger import NeatLogger
+    from NeatLogger import Log
     ```
 
 2. Create an instance.

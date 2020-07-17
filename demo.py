@@ -1,8 +1,8 @@
 import time
 from multiprocessing import Pool
-from NeatLogger import NeatLogger
+from NeatLogger import Log
 
-NL = NeatLogger(
+NL = Log(
     project_name="demo",
     log_folder="demo_logs",
     log_level="info",
@@ -58,7 +58,7 @@ def main():
         logger.error(err)
         pass
 
-    logger.info(NeatLogger.as_header_style("END: DEMO LOGGING"))
+    logger.info(Log.as_header_style("END: DEMO LOGGING"))
 
     return
 
