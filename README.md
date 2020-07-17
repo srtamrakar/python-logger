@@ -29,12 +29,6 @@ $ pip install NeatLogger
         * `"info"`
         * `"debug"`
         * `"notset"`
-        suffix_to_date_time_format_dict = {
-            "D": "%Y-%m-%d",
-            "H": "%Y-%m-%d__%H-00-00",
-            "M": "%Y-%m-%d__%H-%M-00",
-            "S": "%Y-%m-%d__%H-%M-%S",
-        }
     * `log_file_suffix`: Log file suffix. Ignored when files are rotated by time. Choices:
         * `"S"`: `%Y-%m-%d__%H-%M-%S` is appended to the filename.
         * `"M"`: `%Y-%m-%d__%H-%M-00` is appended to the filename.
