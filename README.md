@@ -26,7 +26,7 @@ $ pip install NeatLogger
     log = Log()
     ```
     Arguments (all are optional):
-    * `project_name`: Project name, which would be used as log file's prefix.
+    * `project_name`: Project name which would be used as log file's prefix.
     * `log_folder`: Folder where log files would be stored.
     * `log_level`: Level for logging. Choices:
         * `"critical"`
