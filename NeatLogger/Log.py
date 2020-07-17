@@ -27,12 +27,12 @@ class Log(object):
         rotation_period: str = "H",
         rotation_interval: int = 1,
         rotation_time: datetime.time = None,
-        rotating_file_backup_count: int = 10,
+        rotating_file_backup_count: int = 1024,
         use_utc: bool = False,
         log_formatter: logging.Formatter = None,
     ) -> NoReturn:
 
-        self.project = project_name
+        self.project_name = project_name
         self.log_folder = os.path.abspath(log_folder)
         self.log_level = log_level.upper()
         self.log_file_suffix = log_file_suffix
@@ -124,10 +124,10 @@ class Log(object):
     def __set_log_filename(self, set_suffix: bool = False) -> NoReturn:
         if set_suffix is True:
             self.log_filename = "{0}_{1}.{2}".format(
-                self.project, self.__get_log_filename_suffix(), "log"
+                self.project_name, self.__get_log_filename_suffix(), "log"
             )
         else:
-            self.log_filename = f"{self.project}.log"
+            self.log_filename = f"{self.project_name}.log"
 
     def __get_log_filename_suffix(self) -> str:
         suffix_to_date_time_format_dict = {
@@ -159,7 +159,7 @@ class Log(object):
         self.logger.addHandler(handler)
 
     def __log_project_name(self) -> NoReturn:
-        ascii_text = pyfiglet.figlet_format(self.project, font="standard")
+        ascii_text = pyfiglet.figlet_format(self.project_name, font="standard")
         self.logger.info(f"\n{ascii_text}")
 
     def log_function_call(self, func):
