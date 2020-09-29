@@ -1,8 +1,8 @@
-from typing import Any, NoReturn
+from typing import Any, NoReturn, List
 
 
 class InvalidValue(Exception):
-    def __init__(self, value: Any, allowed_value_list: list) -> NoReturn:
+    def __init__(self, value: Any, allowed_value_list: List[Any]) -> NoReturn:
         self.value = value
         self.allowed_value_list = allowed_value_list
 

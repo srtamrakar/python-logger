@@ -4,9 +4,13 @@ from setuptools import setup
 with open(os.path.join(os.path.dirname(__file__), "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 
-module_version = "0.3.1"
+module_version = "0.4.0"
 
-dependencies_list = ["multiprocessing_logging==0.3.1", "pyfiglet==0.7"]
+dependencies_list = [
+    "multiprocessing_logging==0.3.1",
+    "pyfiglet==0.7",
+    "python-json-logger=2.0.0",
+]
 
 setup(
     name="NeatLogger",
