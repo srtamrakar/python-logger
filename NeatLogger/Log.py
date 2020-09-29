@@ -1,15 +1,15 @@
 import os
-import time
 import datetime
 import inspect
 import pyfiglet
 import logging
-from typing import NoReturn
+from typing import NoReturn, Union
 from logging.handlers import RotatingFileHandler, TimedRotatingFileHandler
 from multiprocessing_logging import install_mp_handler, uninstall_mp_handler
 
-
 from .exceptions import InvalidValue
+from .ApacheFormatter import ApacheFormatter
+from .JsonFormatter import JsonFormatter
 
 
 class Log(object):
@@ -29,7 +29,8 @@ class Log(object):
         rotation_time: datetime.time = None,
         rotating_file_backup_count: int = 1024,
         use_utc: bool = False,
-        log_formatter: logging.Formatter = None,
+        assign_logger_name: bool = False,
+        log_formatter: Union[str, logging.Formatter] = "apache",
     ) -> NoReturn:
 
         self.project_name = project_name
@@ -46,25 +47,39 @@ class Log(object):
         self.rotation_time = rotation_time
         self.rotating_file_backup_count = rotating_file_backup_count
         self.use_utc = use_utc
+        self.assign_logger_name = assign_logger_name
         self.__set_formatter(log_formatter)
         self.__set_logger()
         self.__set_log_handlers()
         self.__log_project_name()
 
-    def __set_formatter(self, log_formatter: logging.Formatter = None) -> NoReturn:
+    def __set_formatter(
+        self, log_formatter: Union[str, logging.Formatter] = "apache"
+    ) -> NoReturn:
 
-        if log_formatter is not None:
+        if isinstance(log_formatter, logging.Formatter) is True:
             self.log_format = log_formatter
+
+        elif isinstance(log_formatter, str) is True:
+            if log_formatter.lower() == "json":
+                self.log_format = JsonFormatter()
+            elif log_formatter.lower() == "apache":
+                self.log_format = ApacheFormatter()
+            else:
+                raise InvalidValue(
+                    value=log_formatter, allowed_value_list=["json", "apache"]
+                )
         else:
-            self.log_format = logging.Formatter(
-                fmt="%(asctime)-23.23s - %(levelname)-12.12s - "
-                + "F %(filename)-20.20s - L %(lineno)-5.5d :: %(message)s",
+            raise TypeError(
+                "'log_formatter' must be of type 'logging.Formatter' or 'str'"
             )
-        if self.use_utc is True:
-            self.log_format.converter = time.gmtime
 
     def __set_logger(self) -> NoReturn:
-        self.logger = logging.getLogger()
+        if self.assign_logger_name is True:
+            self.logger = logging.getLogger(name=self.project_name)
+        else:
+            self.logger = logging.getLogger()
+
         self.logger.setLevel(self.log_level)
 
     def get_logger(self) -> logging.Logger:
@@ -175,10 +190,6 @@ class Log(object):
             return func(*args, **kwargs)
 
         return wrapper
-
-    @classmethod
-    def as_header_style(cls, content: str) -> str:
-        return "{:#^50s}".format(" {0} ".format(content))
 
     @classmethod
     def start_mp(cls, logger: logging.Logger) -> NoReturn:

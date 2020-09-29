@@ -15,7 +15,7 @@ $ pip install NeatLogger
     from NeatLogger import Log
     ```
 
-2. Create an instance.
+1. Create an instance.
     ```python
     log = Log()
     ```
@@ -55,15 +55,19 @@ $ pip install NeatLogger
     * `rotation_interval`: Intervals of rotation period to rollover the log file. Ignored if `rotation_time` is a weekday.
     * `rotation_time`: Time of the day to rollover the log file when `rotation_period` = `"MIDNIGHT"` or a weekday.
     * `rotating_file_backup_count`: Number of old files to be retained.
-    * `use_utc`: Flag to decide whether or not to use UTC.
-    * `log_formatter`: Logging formatter.
-    
-    :warning: If more than 1 of the following are set to `True`, only one of them is implemented. Their priority follows the order:
-    * `rotate_file_by_size`
-    * `rotate_file_by_time`
-    * `log_to_file`
+    * `use_utc`: Flag to decide whether or not to use UTC in the filenames and rotation.
+    * `assign_logger_name`: Flag to decide whether or not to assign name to the logger.
+    * `log_formatter`: Logging formatter. Choices:
+        * an instance of `logging.Formatter`
+        * `"json"`
+        * `"apache"`
 
-3. Get a logger and start logging.
+    :warning: If more than 1 of the following are set to `True`, only one of them is implemented. Their priority follows the order:
+    1. `rotate_file_by_size`
+    1. `rotate_file_by_time`
+    1. `log_to_file`
+
+1. Get a logger and start logging.
     ```python
     logger = log.get_logger()
     logger.info("Testing 1 2 3 ...")
