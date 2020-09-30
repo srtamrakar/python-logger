@@ -33,28 +33,30 @@ def demo_function(arg_1=None, arg_2=None, *args, **kwargs):
 
 
 def main():
+    logger.info("START")
+
     demo_function(1, 2, 3, kwarg_1="Demo value 1", kwarg_2="Demo value 2")
+    logger.info("Logging umlauts: ä ö ü ß")
 
-    logger.info("Testing 1 2 3 ...")
-    logger.info("Umlauts: ä ö ü ß")
-
-    with Pool(processes=5) as pool:
-        NL.start_mp(logger)
-        pool.map(log_number, range(10))
-        NL.end_mp(logger)
-
-    logger.warning("Warning!")
-    logger.debug("Debugging ...")
-
-    for iteration_number in range(10):
-        time.sleep(0.5)
-        logger.info(f"iteration_number={iteration_number}")
-
+    # with Pool(processes=5) as pool:
+    #     NL.start_mp(logger)
+    #     pool.map(log_number, range(10))
+    #     NL.end_mp(logger)
+    #
+    # logger.warning("Warning!")
+    # logger.debug("Debugging ...")
+    #
+    # for iteration_number in range(10):
+    #     time.sleep(0.5)
+    #     logger.info(f"iteration_number={iteration_number}")
+    #
     try:
         raise Exception("An error was forced.")
     except Exception as err:
-        logger.error(err)
+        logger.exception(err)
         pass
+
+    logger.info("END")
 
     return
 

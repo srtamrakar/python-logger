@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from pythonjsonlogger import jsonlogger
 
-from .configs import REMOVE_ATTRIBUTE_LIST
+from .configs import IGNORE_ATTRIBUTE_LIST
 
 
 def merge_record_extra(record, target, reserved):
@@ -23,9 +23,8 @@ class Json(jsonlogger.JsonFormatter):
         )
         super().__init__(
             json_ensure_ascii=False,
-            reserved_attrs=REMOVE_ATTRIBUTE_LIST,
+            reserved_attrs=IGNORE_ATTRIBUTE_LIST,
             timestamp=True,
-            json_indent=4,
         )
 
     def add_fields(self, log_record, record, message_dict):
