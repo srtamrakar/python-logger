@@ -25,7 +25,6 @@ class Json(jsonlogger.JsonFormatter):
             json_ensure_ascii=False,
             reserved_attrs=REMOVE_ATTRIBUTE_LIST,
             timestamp=True,
-            json_indent=4,
         )
 
     def add_fields(self, log_record, record, message_dict):
