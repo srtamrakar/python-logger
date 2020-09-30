@@ -17,6 +17,7 @@ NL = Log(
     rotation_time=None,
     rotating_file_backup_count=100,
     use_utc=False,
+    assign_logger_name=False,
     log_formatter="apache",
 )
 logger = NL.get_logger()
