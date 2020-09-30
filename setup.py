@@ -1,10 +1,10 @@
 import os
-from setuptools import setup
+from setuptools import setup, find_packages
 
 with open(os.path.join(os.path.dirname(__file__), "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 
-module_version = "0.4.3"
+module_version = "0.4.4"
 
 dependencies_list = [
     "multiprocessing_logging==0.3.1",
@@ -14,7 +14,7 @@ dependencies_list = [
 
 setup(
     name="NeatLogger",
-    packages=["NeatLogger"],
+    packages=find_packages(),
     version=module_version,
     license="MIT",
     description="Convenient wrapper for logging python applications, in the desired format, into the files with desired separation intervals.",
