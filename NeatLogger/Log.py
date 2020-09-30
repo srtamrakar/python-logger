@@ -8,8 +8,7 @@ from logging.handlers import RotatingFileHandler, TimedRotatingFileHandler
 from multiprocessing_logging import install_mp_handler, uninstall_mp_handler
 
 from .exceptions import InvalidValue
-from .ApacheFormatter import ApacheFormatter
-from .JsonFormatter import JsonFormatter
+from NeatLogger.Formatter import Apache, Json
 
 
 class Log(object):
@@ -51,7 +50,7 @@ class Log(object):
         self.__set_formatter(log_formatter)
         self.__set_logger()
         self.__set_log_handlers()
-        self.__log_project_name()
+        self.__log_project_name(log_formatter)
 
     def __set_formatter(
         self, log_formatter: Union[str, logging.Formatter] = "apache"
@@ -62,9 +61,9 @@ class Log(object):
 
         elif isinstance(log_formatter, str) is True:
             if log_formatter.lower() == "json":
-                self.log_format = JsonFormatter()
+                self.log_format = Json(use_utc=self.use_utc)
             elif log_formatter.lower() == "apache":
-                self.log_format = ApacheFormatter()
+                self.log_format = Apache(use_utc=self.use_utc)
             else:
                 raise InvalidValue(
                     value=log_formatter, allowed_value_list=["json", "apache"]
@@ -173,9 +172,13 @@ class Log(object):
         handler.setFormatter(self.log_format)
         self.logger.addHandler(handler)
 
-    def __log_project_name(self) -> NoReturn:
-        ascii_text = pyfiglet.figlet_format(self.project_name, font="standard")
-        self.logger.info(f"\n{ascii_text}")
+    def __log_project_name(
+        self, log_formatter: Union[str, logging.Formatter] = "apache"
+    ) -> NoReturn:
+        if isinstance(log_formatter, str):
+            if log_formatter.lower() == "apache":
+                ascii_text = pyfiglet.figlet_format(self.project_name, font="standard")
+                self.logger.info(f"\n{ascii_text}")
 
     def log_function_call(self, func):
         def wrapper(*args, **kwargs):
