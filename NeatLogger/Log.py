@@ -8,7 +8,7 @@ from logging.handlers import RotatingFileHandler, TimedRotatingFileHandler
 from multiprocessing_logging import install_mp_handler, uninstall_mp_handler
 
 from .exceptions import InvalidValue
-from NeatLogger.Formatter import Apache, Json
+from .Formatter import Apache, Json
 
 
 class Log(object):
