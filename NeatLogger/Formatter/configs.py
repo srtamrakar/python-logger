@@ -1,5 +1,4 @@
 from colorama import Fore
-from . import utils
 
 
 LOG_ATTRIBUTES_TO_NAME_AND_FORMAT_AND_COLOR_DICT = {
@@ -37,8 +36,3 @@ IGNORE_ATTRIBUTE_LIST = [
     "relativeCreated",
     "stack_info",
 ]
-
-DEFAULT_APACHE_FORMAT = utils.get_log_format(
-    attr_config_dict=LOG_ATTRIBUTES_TO_NAME_AND_FORMAT_AND_COLOR_DICT,
-    ignore_attr_list=IGNORE_ATTRIBUTE_LIST,
-)

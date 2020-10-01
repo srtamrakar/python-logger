@@ -1,4 +1,4 @@
 colorama==0.4.3
-multiproceqssing_logging==0.3.1
+multiprocessing-logging==0.3.1
 pyfiglet==0.7
-python_json_logger==2.0.0
+python-json-logger==2.0.0

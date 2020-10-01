@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from pythonjsonlogger import jsonlogger
 
-from .configs import IGNORE_ATTRIBUTE_LIST
+from . import configs
 
 
 def merge_record_extra(record, target, reserved):
@@ -18,12 +18,18 @@ def merge_record_extra(record, target, reserved):
 class Json(jsonlogger.JsonFormatter):
     def __init__(self, *args, **kwargs):
         self.use_utc = kwargs.pop("use_utc", False)
+        self.ignore_log_attribute_list = kwargs.pop("ignore_log_attribute_list", None)
         self.timezone = (
             timezone.utc if self.use_utc is True else datetime.now().astimezone().tzinfo
         )
+
+        if self.ignore_log_attribute_list is None:
+            self.ignore_log_attribute_list = configs.IGNORE_ATTRIBUTE_LIST
+        self.ignore_log_attribute_list.append("msg")
+
         super().__init__(
             json_ensure_ascii=False,
-            reserved_attrs=IGNORE_ATTRIBUTE_LIST,
+            reserved_attrs=self.ignore_log_attribute_list,
             timestamp=True,
         )
 
