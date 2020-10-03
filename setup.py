@@ -1,11 +1,16 @@
+import os
 from setuptools import setup, find_packages
 
-module_version = "0.4.6"
+module_version = "0.4.7"
 
-with open("README.md", "r", encoding="utf-8") as f:
+with open(
+    os.path.join(os.path.dirname(__file__), "README.md"), "r", encoding="utf-8"
+) as f:
     long_description = f.read()
 
-with open("requirements.txt", "r", encoding="utf-8") as f:
+with open(
+    os.path.join(os.path.dirname(__file__), "requirements.txt"), "r", encoding="utf-8"
+) as f:
     dependencies_list = f.read().splitlines()
 
 setup(
