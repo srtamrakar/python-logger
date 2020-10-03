@@ -1,17 +1,20 @@
 import os
 import datetime
 import inspect
-import pyfiglet
 import logging
-from typing import NoReturn, Union
 from logging.handlers import RotatingFileHandler, TimedRotatingFileHandler
 from multiprocessing_logging import install_mp_handler, uninstall_mp_handler
+import pyfiglet
+from typing import NoReturn, Union, List
 
 from .exceptions import InvalidValue
 from .Formatter import Apache, Json
 
 
 class Log(object):
+
+    ALLOWED_FORMATTER_STR_LIST = ["json", "apache"]
+
     def __init__(
         self,
         project_name: str = "log",
@@ -29,7 +32,9 @@ class Log(object):
         rotating_file_backup_count: int = 1024,
         use_utc: bool = False,
         assign_logger_name: bool = False,
-        log_formatter: Union[str, logging.Formatter] = "apache",
+        colors_to_stdout: bool = True,
+        formatter: Union[str, logging.Formatter] = "apache",
+        ignore_log_attribute_list: List[str] = None,
     ) -> NoReturn:
 
         self.project_name = project_name
@@ -47,31 +52,12 @@ class Log(object):
         self.rotating_file_backup_count = rotating_file_backup_count
         self.use_utc = use_utc
         self.assign_logger_name = assign_logger_name
-        self.__set_formatter(log_formatter)
+        self.colors_to_stdout = colors_to_stdout
+        self.input_formatter = formatter
+        self.ignore_log_attribute_list = ignore_log_attribute_list
         self.__set_logger()
         self.__set_log_handlers()
-        self.__log_project_name(log_formatter)
-
-    def __set_formatter(
-        self, log_formatter: Union[str, logging.Formatter] = "apache"
-    ) -> NoReturn:
-
-        if isinstance(log_formatter, logging.Formatter) is True:
-            self.log_format = log_formatter
-
-        elif isinstance(log_formatter, str) is True:
-            if log_formatter.lower() == "json":
-                self.log_format = Json(use_utc=self.use_utc)
-            elif log_formatter.lower() == "apache":
-                self.log_format = Apache(use_utc=self.use_utc)
-            else:
-                raise InvalidValue(
-                    value=log_formatter, allowed_value_list=["json", "apache"]
-                )
-        else:
-            raise TypeError(
-                "'log_formatter' must be of type 'logging.Formatter' or 'str'"
-            )
+        self.__print_project_name()
 
     def __set_logger(self) -> NoReturn:
         if self.assign_logger_name is True:
@@ -93,7 +79,7 @@ class Log(object):
                 maxBytes=self.rotating_file_max_size_bytes,
                 backupCount=self.rotating_file_backup_count,
             )
-            self.__add_handler(fh)
+            self.__add_handler(handler=fh, add_colors=False)
 
         elif self.rotate_file_by_time is True:
             self.__validate_rotation_period()
@@ -107,19 +93,19 @@ class Log(object):
                 utc=self.use_utc,
                 atTime=self.rotation_time,
             )
-            self.__add_handler(fh)
+            self.__add_handler(handler=fh, add_colors=False)
 
         elif self.log_to_file is True:
             self.__set_log_filepath(set_suffix=True)
             fh = logging.FileHandler(filename=self.log_filepath, encoding="utf-8")
-            self.__add_handler(fh)
+            self.__add_handler(handler=fh, add_colors=False)
 
         else:
             pass
 
         if self.log_to_stdout is True:
             sh = logging.StreamHandler()
-            self.__add_handler(sh)
+            self.__add_handler(handler=sh, add_colors=self.colors_to_stdout)
 
     def __set_log_filepath(self, set_suffix: bool = False) -> NoReturn:
         self.__set_log_filename(set_suffix=set_suffix)
@@ -132,7 +118,8 @@ class Log(object):
         allowed_rotation_period_list += list(map(lambda n: f"W{n}", range(0, 7)))
         if self.rotation_period not in allowed_rotation_period_list:
             raise InvalidValue(
-                self.rotation_period, allowed_rotation_period_list,
+                self.rotation_period,
+                allowed_rotation_period_list,
             )
 
     def __set_log_filename(self, set_suffix: bool = False) -> NoReturn:
@@ -167,18 +154,38 @@ class Log(object):
         else:
             return datetime.datetime.now()
 
-    def __add_handler(self, handler: logging.Handler) -> NoReturn:
+    def __add_handler(self, handler: logging.Handler, add_colors: bool) -> NoReturn:
         handler.setLevel(self.log_level)
-        handler.setFormatter(self.log_format)
+        handler.setFormatter(self.__get_formatter(add_colors=add_colors))
         self.logger.addHandler(handler)
 
-    def __log_project_name(
-        self, log_formatter: Union[str, logging.Formatter] = "apache"
-    ) -> NoReturn:
-        if isinstance(log_formatter, str):
-            if log_formatter.lower() == "apache":
-                ascii_text = pyfiglet.figlet_format(self.project_name, font="standard")
-                self.logger.info(f"\n{ascii_text}")
+    def __get_formatter(self, add_colors: bool) -> logging.Formatter:
+        if isinstance(self.input_formatter, logging.Formatter) is True:
+            return self.input_formatter
+
+        elif isinstance(self.input_formatter, str) is True:
+            if self.input_formatter.lower() == "json":
+                return Json(
+                    use_utc=self.use_utc,
+                    ignore_log_attribute_list=self.ignore_log_attribute_list,
+                )
+            elif self.input_formatter.lower() == "apache":
+                return Apache(
+                    use_utc=self.use_utc,
+                    add_colors=add_colors,
+                    ignore_log_attribute_list=self.ignore_log_attribute_list,
+                )
+            else:
+                raise InvalidValue(
+                    value=self.input_formatter,
+                    allowed_value_list=self.ALLOWED_FORMATTER_STR_LIST,
+                )
+        else:
+            raise TypeError("'formatter' must be of type 'logging.Formatter' or 'str'")
+
+    def __print_project_name(self) -> NoReturn:
+        ascii_text = pyfiglet.figlet_format(self.project_name, font="standard")
+        print(f"\n{ascii_text}")
 
     def log_function_call(self, func):
         def wrapper(*args, **kwargs):

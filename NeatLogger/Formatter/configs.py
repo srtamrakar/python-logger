@@ -1,29 +1,31 @@
-LOG_ATTRIBUTES_TO_STRING_FORMAT_DICT = {
-    "args": None,
-    "asctime": "s",
-    "created": "f",
-    "exc_info": None,
-    "exc_text": None,
-    "filename": "s",
-    "funcName": "s",
-    "levelname": "s",
-    "levelno": "d",
-    "lineno": "d",
-    "message": "s",
-    "module": "s",
-    "msecs": "d",
-    "msg": None,
-    "name": "s",
-    "pathname": "s",
-    "process": "d",
-    "processName": "s",
-    "relativeCreated": "d",
-    "stack_info": None,
-    "thread": "d",
-    "threadName": "s",
-}
+from colorama import Fore
 
-REMOVE_ATTRIBUTE_LIST = [
+
+LOG_ATTRIBUTES_TO_NAME_AND_FORMAT_AND_COLOR_DICT = {
+    "asctime": ("timestamp", "s", Fore.YELLOW),
+    "created": (None, "f", Fore.YELLOW),
+    "msecs": (None, "d", Fore.YELLOW),
+    "relativeCreated": (None, "d", Fore.YELLOW),
+    "name": (None, "s", Fore.MAGENTA),
+    "levelname": (None, "s", Fore.RED),
+    "levelno": (None, "d", Fore.RED),
+    "pathname": (None, "s", Fore.CYAN),
+    "filename": (None, "s", Fore.CYAN),
+    "lineno": (None, "d", Fore.CYAN),
+    "module": (None, "s", Fore.BLUE),
+    "funcName": (None, "s", Fore.BLUE),
+    "process": (None, "d", Fore.LIGHTGREEN_EX),
+    "processName": (None, "s", Fore.LIGHTGREEN_EX),
+    "thread": (None, "d", Fore.LIGHTBLUE_EX),
+    "threadName": (None, "s", Fore.LIGHTBLUE_EX),
+    "exc_info": (None, None, Fore.BLACK),
+    "exc_text": (None, None, Fore.BLACK),
+    "stack_info": (None, None, Fore.BLACK),
+    "args": (None, None, Fore.WHITE),
+}
+# "msg" and "message" are excluded on purpose
+
+IGNORE_ATTRIBUTE_LIST = [
     "args",
     "created",
     "exc_info",
@@ -31,15 +33,6 @@ REMOVE_ATTRIBUTE_LIST = [
     "pathname",
     "levelno",
     "msecs",
-    "msg",
     "relativeCreated",
     "stack_info",
 ]
-
-DEFAULT_APACHE_FORMAT = ""
-for attr, str_format in LOG_ATTRIBUTES_TO_STRING_FORMAT_DICT.items():
-    if attr == "message" or attr in REMOVE_ATTRIBUTE_LIST:
-        continue
-    attr_name = "timestamp" if attr == "asctime" else attr
-    DEFAULT_APACHE_FORMAT += f"[{attr_name} %({attr}){str_format}] "
-DEFAULT_APACHE_FORMAT += "%(message)s"

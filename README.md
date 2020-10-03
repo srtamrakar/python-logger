@@ -1,5 +1,5 @@
 # NeatLogger
-Convenient wrapper for logging python applications, in the desired format, into the files with desired separation intervals.
+Convenient wrapper for logging python applications with options to add color, select logging style, rotate files by size and time, etc.
 
 
 ## Install with pip
@@ -27,7 +27,7 @@ $ pip install NeatLogger
         * `"info"`
         * `"debug"`
         * `"notset"`
-    * `log_file_suffix`: Suffix for log filenames. It is ignored when the log files are being rotated by time. Choices:
+    * `log_file_suffix`: Suffix for log filenames. Ignored if `rotate_file_by_time=True` . Choices:
         * `"S"`: `%Y-%m-%d_%H-%M-%S` is appended to the filename.
         * `"M"`: `%Y-%m-%d_%H-%M-00`
         * `"H"`: `%Y-%m-%d_%H-00-00`
@@ -36,7 +36,7 @@ $ pip install NeatLogger
     * `log_to_file`: Flag to decide whether or not to store the logs in file.
     * `rotate_file_by_size`: Flag to decide whether or not to rotate the log files by size.
     * `rotating_file_max_size_bytes`: Size (in bytes) threshold to rollover the log files.
-    * `rotate_file_by_time`: Flag to decide whether or not to rotate the log files by time.
+    * `rotate_file_by_time`: Flag to decide whether or not to rotate the log files by time. Ignores `log_file_suffix`.
     * `rotation_period`: Rotation period for the log files. Choices:
         * `"S"`: log file rollovers every second. Ignores `rotation_time`.
         * `"M"`: log file rollovers every minute. Ignores `rotation_time`.
@@ -55,10 +55,12 @@ $ pip install NeatLogger
     * `rotating_file_backup_count`: Number of old files to be retained.
     * `use_utc`: Flag to decide whether or not to use UTC in the log timestamp and filenames.
     * `assign_logger_name`: Flag to decide whether or not to assign `project_name` as the name to the logger.
-    * `log_formatter`: Logging formatter. Choices:
+    * `colors_to_stdout`: Flag to decide whether or not to have colorful log. Only works for `log_to_stdout=True` and `log_formatter="apache"`.
+    * `formatter`: Logging formatter. Choices:
         * an instance of `logging.Formatter`
         * `"json"`
         * `"apache"`
+    * `ignore_log_attribute_list`: List of log attributes to be ignored in log. By default, some of the attributes are ignored. If all the attributes are desired, use `ignore_log_attribute_list=list()`.
 
     :warning: If more than 1 of the following are set to `True`, only one of them is implemented. Their priority follows the order:
     1. `rotate_file_by_size`
