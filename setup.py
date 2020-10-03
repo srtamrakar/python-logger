@@ -1,17 +1,19 @@
 import os
 from setuptools import setup, find_packages
 
-module_version = "0.4.7"
+module_version = "0.4.8"
 
 with open(
     os.path.join(os.path.dirname(__file__), "README.md"), "r", encoding="utf-8"
 ) as f:
     long_description = f.read()
 
-with open(
-    os.path.join(os.path.dirname(__file__), "requirements.txt"), "r", encoding="utf-8"
-) as f:
-    dependencies_list = f.read().splitlines()
+dependencies_list = [
+    "colorama==0.4.3",
+    "multiprocessing-logging==0.3.1",
+    "pyfiglet==0.7",
+    "python-json-logger==2.0.0",
+]
 
 setup(
     name="NeatLogger",
