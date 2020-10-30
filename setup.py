@@ -1,7 +1,7 @@
 import os
 from setuptools import setup, find_packages
 
-module_version = "0.4.8"
+module_version = "0.4.9"
 
 with open(
     os.path.join(os.path.dirname(__file__), "README.md"), "r", encoding="utf-8"

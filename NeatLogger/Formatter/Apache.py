@@ -17,7 +17,7 @@ class Apache(logging.Formatter):
         )
 
         if self.ignore_log_attribute_list is None:
-            self.ignore_log_attribute_list = configs.IGNORE_ATTRIBUTE_LIST
+            self.ignore_log_attribute_list = configs.DEFAULT_IGNORE_ATTRIBUTE_LIST
 
         if fmt is not None:
             log_format = fmt

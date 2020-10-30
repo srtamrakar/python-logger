@@ -18,11 +18,13 @@ class Log(object):
     def __init__(
         self,
         project_name: str = "log",
-        log_folder: str = "logs",
         log_level: str = "info",
-        log_file_suffix: str = "S",
+        assign_logger_name: bool = False,
+        formatter: Union[str, logging.Formatter] = "apache",
         log_to_stdout: bool = True,
         log_to_file: bool = False,
+        log_dir: str = "logs",
+        log_file_suffix: str = "S",
         rotate_file_by_size: bool = False,
         rotating_file_max_size_bytes: int = 1048576,
         rotate_file_by_time: bool = False,
@@ -31,18 +33,18 @@ class Log(object):
         rotation_time: datetime.time = None,
         rotating_file_backup_count: int = 1024,
         use_utc: bool = False,
-        assign_logger_name: bool = False,
         colors_to_stdout: bool = True,
-        formatter: Union[str, logging.Formatter] = "apache",
         ignore_log_attribute_list: List[str] = None,
     ) -> NoReturn:
 
         self.project_name = project_name
-        self.log_folder = os.path.abspath(log_folder)
         self.log_level = log_level.upper()
-        self.log_file_suffix = log_file_suffix
+        self.assign_logger_name = assign_logger_name
+        self.input_formatter = formatter
         self.log_to_stdout = log_to_stdout
         self.log_to_file = log_to_file
+        self.log_dir = os.path.abspath(log_dir)
+        self.log_file_suffix = log_file_suffix
         self.rotate_file_by_size = rotate_file_by_size
         self.rotating_file_max_size_bytes = rotating_file_max_size_bytes
         self.rotate_file_by_time = rotate_file_by_time
@@ -51,9 +53,7 @@ class Log(object):
         self.rotation_time = rotation_time
         self.rotating_file_backup_count = rotating_file_backup_count
         self.use_utc = use_utc
-        self.assign_logger_name = assign_logger_name
         self.colors_to_stdout = colors_to_stdout
-        self.input_formatter = formatter
         self.ignore_log_attribute_list = ignore_log_attribute_list
         self.__set_logger()
         self.__set_log_handlers()
@@ -61,20 +61,20 @@ class Log(object):
 
     def __set_logger(self) -> NoReturn:
         if self.assign_logger_name is True:
-            self.logger = logging.getLogger(name=self.project_name)
+            self.__logger = logging.getLogger(name=self.project_name)
         else:
-            self.logger = logging.getLogger()
+            self.__logger = logging.getLogger()
 
-        self.logger.setLevel(self.log_level)
+        self.__logger.setLevel(self.log_level)
 
     def get_logger(self) -> logging.Logger:
-        return self.logger
+        return self.__logger
 
     def __set_log_handlers(self) -> NoReturn:
         if self.rotate_file_by_size is True:
             self.__set_log_filepath(set_suffix=True)
             fh = RotatingFileHandler(
-                filename=self.log_filepath,
+                filename=self.__log_filepath,
                 encoding="utf-8",
                 maxBytes=self.rotating_file_max_size_bytes,
                 backupCount=self.rotating_file_backup_count,
@@ -85,7 +85,7 @@ class Log(object):
             self.__validate_rotation_period()
             self.__set_log_filepath(set_suffix=False)
             fh = TimedRotatingFileHandler(
-                filename=self.log_filepath,
+                filename=self.__log_filepath,
                 encoding="utf-8",
                 when=self.rotation_period,
                 interval=self.rotation_interval,
@@ -97,7 +97,7 @@ class Log(object):
 
         elif self.log_to_file is True:
             self.__set_log_filepath(set_suffix=True)
-            fh = logging.FileHandler(filename=self.log_filepath, encoding="utf-8")
+            fh = logging.FileHandler(filename=self.__log_filepath, encoding="utf-8")
             self.__add_handler(handler=fh, add_colors=False)
 
         else:
@@ -109,9 +109,9 @@ class Log(object):
 
     def __set_log_filepath(self, set_suffix: bool = False) -> NoReturn:
         self.__set_log_filename(set_suffix=set_suffix)
-        if not os.path.exists(self.log_folder):
-            os.makedirs(self.log_folder)
-        self.log_filepath = os.path.join(self.log_folder, self.log_filename)
+        if not os.path.exists(self.log_dir):
+            os.makedirs(self.log_dir)
+        self.__log_filepath = os.path.join(self.log_dir, self.__log_filename)
 
     def __validate_rotation_period(self) -> NoReturn:
         allowed_rotation_period_list = ["S", "M", "H", "D", "MIDNIGHT"]
@@ -124,11 +124,11 @@ class Log(object):
 
     def __set_log_filename(self, set_suffix: bool = False) -> NoReturn:
         if set_suffix is True:
-            self.log_filename = "{0}_{1}.{2}".format(
+            self.__log_filename = "{0}_{1}.{2}".format(
                 self.project_name, self.__get_log_filename_suffix(), "log"
             )
         else:
-            self.log_filename = f"{self.project_name}.log"
+            self.__log_filename = f"{self.project_name}.log"
 
     def __get_log_filename_suffix(self) -> str:
         suffix_to_date_time_format_dict = {
@@ -157,7 +157,7 @@ class Log(object):
     def __add_handler(self, handler: logging.Handler, add_colors: bool) -> NoReturn:
         handler.setLevel(self.log_level)
         handler.setFormatter(self.__get_formatter(add_colors=add_colors))
-        self.logger.addHandler(handler)
+        self.__logger.addHandler(handler)
 
     def __get_formatter(self, add_colors: bool) -> logging.Formatter:
         if isinstance(self.input_formatter, logging.Formatter) is True:

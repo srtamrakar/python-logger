@@ -25,7 +25,7 @@ LOG_ATTRIBUTES_TO_NAME_AND_FORMAT_AND_COLOR_DICT = {
 }
 # "msg" and "message" are excluded on purpose
 
-IGNORE_ATTRIBUTE_LIST = [
+DEFAULT_IGNORE_ATTRIBUTE_LIST = [
     "args",
     "created",
     "exc_info",
@@ -35,4 +35,10 @@ IGNORE_ATTRIBUTE_LIST = [
     "msecs",
     "relativeCreated",
     "stack_info",
+    "module",
+    "funcName",
+    "thread",
+    "threadName",
+    "process",
+    "processName"
 ]
